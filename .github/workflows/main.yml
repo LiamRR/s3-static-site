@@ -26,12 +26,11 @@ jobs:
         terraform_version: 1.5.0  # Specify your preferred version
     
     - name: Debug Directory Structure
-      run: ls -l ./terraform
-      
+      run: ls -l 
 
     - name: Terraform init
       id: init
-      working-directory: ./terraform
+      working-directory: .
       run: terraform init -backend-config="bucket=${{ secrets.BUCKET_TF_STATE }}"
  
     - name: Terraform format
