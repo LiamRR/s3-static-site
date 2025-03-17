@@ -25,6 +25,10 @@ jobs:
       with:
         terraform_version: 1.5.0  # Specify your preferred version
     
+    - name: Debug Directory Structure
+      run: ls -l ./terraform
+      
+
     - name: Terraform init
       id: init
       working-directory: ./terraform
