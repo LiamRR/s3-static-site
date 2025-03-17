@@ -47,7 +47,7 @@ jobs:
       
     - name: Terraform plan
       id: plan
-      working-directory: ./terraform
+      working-directory: .
       if: github.event_name == 'push' && github.ref == 'refs/heads/main'
       run: terraform plan -no-color -input=false
       continue-on-error: true
