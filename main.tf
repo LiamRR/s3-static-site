@@ -24,7 +24,16 @@ module "route53" {
   s3_hosted_zone_id = module.s3.hosted_zone_id
 }
 
+module "test_record" {
+  source = "./modules/route53"
 
+  website_endpoint  = module.s3.website_endpoint
+  record_name       = "dev"
+  record_type       = "CNAME"
+  records           = [module.s3.website_endpoint]
+  ttl               = 300
+  s3_hosted_zone_id = module.s3.hosted_zone_id
+}
 
 # module "cloudfront" {
 #   source = "./modules/cloudfront"
