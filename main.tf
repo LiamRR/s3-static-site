@@ -9,19 +9,19 @@ module "s3" {
 module "acm" {
   source = "./modules/acm"
 
-  domain_name               = "*.nuunya.business"
-  validation_method         = "DNS"
+  domain_name       = "*.nuunya.business"
+  validation_method = "DNS"
 }
 
 module "route53" {
   source = "./modules/route53"
 
-  website_endpoint                   = module.s3.website_endpoint
-  record_name                        = "its"
-  record_type                        = "CNAME"
-  records                            = [module.s3.website_endpoint]
-  ttl                                = 300
-  s3_hosted_zone_id                  = module.s3.hosted_zone_id
+  website_endpoint  = module.s3.website_endpoint
+  record_name       = "its"
+  record_type       = "CNAME"
+  records           = [module.s3.website_endpoint]
+  ttl               = 300
+  s3_hosted_zone_id = module.s3.hosted_zone_id
 }
 
 
@@ -35,5 +35,5 @@ module "route53" {
 #   domain_name                 = module.s3.bucket_name
 #   subject_alternative_names   = ["its.nuunya.business"]
 
- 
+
 # }
