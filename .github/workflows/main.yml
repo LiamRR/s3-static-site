@@ -15,28 +15,24 @@ jobs:
   terraform:
     name: Deploy static site
     runs-on: ubuntu-latest
-    defaults:
-     run:
-       shell: bash
-       # We keep Terraform files in the terraform directory.
-       working-directory: ./terraform
 
     steps:
     - name: Checkout repository on our runner.
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
         
     - name: Setup Terraform with the same version as the project.
-      uses: hashicorp/setup-terraform@v2
+      uses: hashicorp/setup-terraform@v3
       with:
         terraform_version: 1.5.0  # Specify your preferred version
     
     - name: Terraform init
       id: init
+      working-directory: ./terraform
       run: terraform init -backend-config="bucket=$BUCKET_TF_STATE"
  
     - name: Terraform format
       id: fmt
-      run: terraform fmt -check
+      run: terraform fmt -check -recursive
     
     - name: Terraform validate
       id: validate
@@ -44,6 +40,7 @@ jobs:
       
     - name: Terraform plan
       id: plan
+      working-directory: ./terraform
       if: github.event_name == 'push' && github.ref == 'refs/heads/main'
       run: terraform plan -no-color -input=false
       continue-on-error: true
