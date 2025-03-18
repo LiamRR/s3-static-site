@@ -2,18 +2,26 @@ name: Terraform CI/CD for S3 Static Site
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        default: 'dev'
+        type: choice
+        options:
+          - 'dev'
+          - 'staging'
+          - 'prod'
 
 env:
   TF_LOG: INFO
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   # S3 bucket for the Terraform state
   BUCKET_TF_STATE: ${{ secrets.BUCKET_TF_STATE}}
-  # Use existing AWS credentials
-  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  AWS_REGION: "eu-west-1"
 
 jobs:
 
@@ -28,28 +36,52 @@ jobs:
     - name: Setup Terraform with the same version as the project.
       uses: hashicorp/setup-terraform@v3
       with:
-        terraform_version: 1.5.0  # Specify your preferred version
+        terraform_version: 1.5.0
+        terraform_wrapper: false
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_REGION }}
 
     - name: Terraform init
       id: init
       working-directory: .
-      run: terraform init -backend-config="bucket=${{ secrets.BUCKET_TF_STATE }}"
+      run: terraform init -backend-config="bucket=${{ secrets.BUCKET_TF_STATE }}" -input=false
  
+    - name: Cache Terraform modules
+      uses: actions/cache@v3
+      with:
+        path: .terraform
+        key: ${{ runner.os }}-terraform-${{ hashFiles('**/.terraform.lock.hcl') }}
+        restore-keys: |
+          ${{ runner.os }}-terraform-
+
     - name: Terraform format
       id: fmt
       run: terraform fmt -recursive
+      continue-on-error: true
       
     - name: Terraform plan
       id: plan
       working-directory: .
       if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-      run: terraform plan -no-color -input=false
+      run: terraform plan -no-color -input=false -out=tfplan
       continue-on-error: true
 
     - name: Terraform Plan Status
       if: steps.plan.outcome == 'failure'
       run: exit 1
 
+    - name: Upload plan artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: terraform-plan
+        path: tfplan
+        retention-days: 5
+
     - name: Terraform Apply
-      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-      run: terraform apply -auto-approve -input=false
+      if: github.ref == 'refs/heads/main' && github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+      run: terraform apply -auto-approve -input=false tfplan
