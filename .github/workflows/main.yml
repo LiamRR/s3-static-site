@@ -47,8 +47,8 @@ jobs:
         aws-region: ${{ secrets.AWS_REGION }}
 
     # Testing
-    - name: Terraform get
-      run: terraform get
+    - name: Cleanup Terraform cache
+      run: rm -rf .terraform .terraform.lock.hcl
 
     - name: Terraform init
       id: init
