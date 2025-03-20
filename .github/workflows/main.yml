@@ -46,16 +46,13 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ secrets.AWS_REGION }}
 
-    # Testing
-    - name: Cleanup Terraform cache
-      run: rm -rf .terraform .terraform.lock.hcl
-
     - name: Terraform init
       id: init
       working-directory: .
-      run: terraform init -backend-config="bucket=${{ secrets.BUCKET_TF_STATE }}" -input=false -upgrade
+      run: terraform init -backend-config="bucket=${{ secrets.BUCKET_TF_STATE }}" -input=false -upgrade -reconfigure
  
     - name: Cache Terraform modules
+      if: false  # Temporarily disable cache
       uses: actions/cache@v4
       with:
         path: .terraform
@@ -65,6 +62,7 @@ jobs:
 
     - name: Terraform format
       id: fmt
+      working-directory: .
       run: terraform fmt -recursive
       continue-on-error: true
       
@@ -87,5 +85,6 @@ jobs:
         retention-days: 5
 
     - name: Terraform Apply
+      working-directory: .
       if: github.ref == 'refs/heads/main' && github.event_name == 'push' || github.event_name == 'workflow_dispatch'
       run: terraform apply -auto-approve -input=false tfplan
