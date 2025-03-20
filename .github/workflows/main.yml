@@ -49,10 +49,10 @@ jobs:
     - name: Terraform init
       id: init
       working-directory: .
-      run: terraform init -backend-config="bucket=${{ secrets.BUCKET_TF_STATE }}" -input=false
+      run: terraform init -backend-config="bucket=${{ secrets.BUCKET_TF_STATE }}" -input=false -upgrade
  
     - name: Cache Terraform modules
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: .terraform
         key: ${{ runner.os }}-terraform-${{ hashFiles('**/.terraform.lock.hcl') }}
