@@ -3,7 +3,6 @@ data "aws_route53_zone" "nuunya_business" {
   private_zone = var.private_zone
 }
 
-
 # Create an ACM Certificate
 # NOTE: The certificate must be in the US East (N. Virginia) Region (us-east-1) for CloudFront
 resource "aws_acm_certificate" "cert" {
@@ -31,13 +30,6 @@ resource "aws_route53_record" "cert_validation_record" {
   type            = each.value.type
   zone_id         = data.aws_route53_zone.nuunya_business.zone_id
 }
-
-# Valid the certificate using the CNAME above.
-# resource "aws_acm_certificate_validation" "cert" {
-#   certificate_arn         = aws_acm_certificate.cert.arn
-#   validation_record_fqdns = ["nuunya.business"]
-
-# }
 
 resource "aws_acm_certificate_validation" "cert_validation" {
   timeouts {

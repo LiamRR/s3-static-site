@@ -4,6 +4,11 @@ variable "zone_name" {
   default     = "nuunya.business"
 }
 
+# variable "zone_id" {
+#   description = "ID of the zone"
+#   type        = string
+# }
+
 variable "private_zone" {
   description = "is the zone private"
   type        = bool
@@ -53,6 +58,16 @@ variable "s3_hosted_zone_id" {
   type        = string
   description = "The S3 bucket hosted zone ID"
 }
+
+# variable "cloudfront_domain_name" {
+#   description = "CloudFront distribution domain name"
+#   type        = string
+# }
+
+# variable "cloudfront_hosted_zone_id" {
+#   description = "CloudFront hosted zone ID"
+#   type        = string
+# }
 
 # variable "acm_certificate_validation_records" {
 #   description = "Domain validation records for the ACM certificate"
