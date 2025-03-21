@@ -18,6 +18,7 @@ variable "private_zone" {
 variable "record_name" {
   description = "name of the record"
   type        = string
+  default     = ""
 }
 
 variable "records" {
@@ -31,11 +32,11 @@ variable "record_type" {
   type        = string
 }
 
-variable "ttl" {
-  description = "value of the TTL"
-  type        = number
-  default     = 300
-}
+# variable "ttl" {
+#   description = "value of the TTL"
+#   type        = number
+#   default     = 300
+# }
 
 variable "target_health" {
   description = "evaluate target health"
@@ -49,43 +50,29 @@ variable "domain_name" {
   default     = "*.nuunya.business"
 }
 
+variable "domain_name_simple" {
+  description = "Full domain"
+  type        = string
+  default     = ""
+}
+
 variable "website_endpoint" {
   type        = string
   description = "The S3 bucket website endpoint"
+  default     = ""
 }
 
-variable "s3_hosted_zone_id" {
+# variable "s3_hosted_zone_id" {
+#   type        = string
+#   description = "The S3 bucket hosted zone ID"
+# }
+
+variable "cloudfront_domain_name" {
+  description = "CloudFront distribution domain name"
   type        = string
-  description = "The S3 bucket hosted zone ID"
 }
 
-# variable "cloudfront_domain_name" {
-#   description = "CloudFront distribution domain name"
-#   type        = string
-# }
-
-# variable "cloudfront_hosted_zone_id" {
-#   description = "CloudFront hosted zone ID"
-#   type        = string
-# }
-
-# variable "acm_certificate_validation_records" {
-#   description = "Domain validation records for the ACM certificate"
-#   type        = list(map(string))
-# }
-
-# variable "cloudfront_domain_name" {
-#   description = "Domain name of the CloudFront distribution"
-#   type        = string
-# }
-
-# variable "cloudfront_zone_id" {
-#   description = "Hosted zone ID of the CloudFront distribution"
-#   type        = string
-# }
-
-# variable "domain_validation_options" {
-#   description = "Domain validation options for the ACM certificate"
-#   type        = list(map(string))
-#   default     = []
-# }
+variable "cloudfront_hosted_zone_id" {
+  description = "CloudFront hosted zone ID"
+  type        = string
+}

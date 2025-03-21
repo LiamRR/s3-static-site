@@ -3,10 +3,10 @@
 #   type        = string
 # }
 
-# variable "origin_id" {
-#   description = "origin_id"
-#   type = string
-# }
+variable "origin_id" {
+  description = "origin_id"
+  type        = string
+}
 
 
 # variable "bucket_regional_domain_name" {
@@ -24,10 +24,17 @@ variable "s3_website_endpoint" {
   type        = string
 }
 
-# variable "domain_name" {
-#   description = "Domain name for the website"
-#   type        = string
-# }
+variable "domain_name_simple" {
+  description = "Full domain"
+  type        = string
+  default     = ""
+}
+
+variable "domain_name" {
+  description = "Domain name for the website"
+  type        = string
+  default     = ""
+}
 
 # variable "subject_alternative_names" {
 #   description = "Subject alternative names for the certificate"

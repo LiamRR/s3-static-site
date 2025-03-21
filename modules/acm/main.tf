@@ -14,6 +14,7 @@ resource "aws_acm_certificate" "cert" {
   }
 }
 
+# Create CNAMES for ACM Certificate validation.
 resource "aws_route53_record" "cert_validation_record" {
   for_each = {
     for dvo in aws_acm_certificate.cert.domain_validation_options : dvo.domain_name => {
@@ -31,6 +32,7 @@ resource "aws_route53_record" "cert_validation_record" {
   zone_id         = data.aws_route53_zone.nuunya_business.zone_id
 }
 
+# Wait for the certificate to be issued.
 resource "aws_acm_certificate_validation" "cert_validation" {
   timeouts {
     create = "5m"
