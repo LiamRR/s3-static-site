@@ -4,6 +4,7 @@ module "s3" {
 
   # Needs to match domain name for R53
   bucket_name = "its.nuunya.business"
+  cloudfront_arn = module.cloudfront.cloudfront_arn
 }
 
 provider "aws" {

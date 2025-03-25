@@ -1,18 +1,7 @@
-# variable "bucket_name" {
-#   description = "Name of the S3 bucket"
-#   type        = string
-# }
-
 variable "origin_id" {
   description = "origin_id"
   type        = string
 }
-
-
-# variable "bucket_regional_domain_name" {
-#   description = "Regional domain name of the S3 bucket"
-#   type        = string
-# }
 
 variable "acm_certificate_arn" {
   description = "ARN of the ACM certificate"
@@ -35,10 +24,3 @@ variable "domain_name" {
   type        = string
   default     = ""
 }
-
-# variable "subject_alternative_names" {
-#   description = "Subject alternative names for the certificate"
-#   type        = list(string)
-#   default     = []
-# }
-

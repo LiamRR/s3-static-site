@@ -12,3 +12,6 @@ output "cloudfront_domain_name" {
   value       = aws_cloudfront_distribution.cdn_static_site.domain_name
 }
 
+output "cloudfront_arn" {
+  value = aws_cloudfront_distribution.cdn_static_site.arn
+}
