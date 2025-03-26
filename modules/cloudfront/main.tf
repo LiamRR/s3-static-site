@@ -51,7 +51,7 @@ resource "aws_cloudfront_distribution" "cdn_static_site" {
   }
 
   aliases = [
-    var.domain_name_simple, # nuunya.business
-    var.domain_name         # its.nuunya.business
+    var.domain_name, # nuunya.business
+    var.sub_domain   # its.nuunya.business
   ]
 }

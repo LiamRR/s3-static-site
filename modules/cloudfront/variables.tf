@@ -13,14 +13,14 @@ variable "s3_website_endpoint" {
   type        = string
 }
 
-variable "domain_name_simple" {
+variable "domain_name" {
   description = "Full domain"
   type        = string
   default     = ""
 }
 
-variable "domain_name" {
-  description = "Domain name for the website"
+variable "sub_domain" {
+  description = "sub domain for the website"
   type        = string
   default     = ""
 }

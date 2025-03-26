@@ -4,11 +4,6 @@ variable "zone_name" {
   default     = "nuunya.business"
 }
 
-# variable "zone_id" {
-#   description = "ID of the zone"
-#   type        = string
-# }
-
 variable "private_zone" {
   description = "is the zone private"
   type        = bool
@@ -30,13 +25,8 @@ variable "records" {
 variable "record_type" {
   description = "type of record"
   type        = string
+  default     = ""
 }
-
-# variable "ttl" {
-#   description = "value of the TTL"
-#   type        = number
-#   default     = 300
-# }
 
 variable "target_health" {
   description = "evaluate target health"
@@ -44,11 +34,11 @@ variable "target_health" {
   default     = true
 }
 
-variable "domain_name" {
-  type        = string
-  description = "The domain name for the website"
-  default     = "*.nuunya.business"
-}
+# variable "domain_name" {
+#   type        = string
+#   description = "The domain name for the website"
+#   default     = "*.nuunya.business"
+# }
 
 variable "domain_name_simple" {
   description = "Full domain"
@@ -62,17 +52,14 @@ variable "website_endpoint" {
   default     = ""
 }
 
-# variable "s3_hosted_zone_id" {
-#   type        = string
-#   description = "The S3 bucket hosted zone ID"
-# }
-
 variable "cloudfront_domain_name" {
   description = "CloudFront distribution domain name"
   type        = string
+  default     = ""
 }
 
 variable "cloudfront_hosted_zone_id" {
   description = "CloudFront hosted zone ID"
   type        = string
+  default     = ""
 }
